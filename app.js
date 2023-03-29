@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const https = require("https")
+const https = require("https");
 
 const app = express();
 
@@ -22,26 +22,39 @@ app.post("/", (req, res) => {
         email_address: email,
         status: "subscribed",
         merge_fields: {
-          FNAME: firstName,
-          LNAME: lastName,
+          FNAME: fName,
+          LNAME: lName,
         },
       },
     ],
   };
   var jsonData = JSON.stringify(data);
 
-  const url = 
+  const url = "https://us21.api.mailchimp.com/3.0/lists/9f7bf0a398";
 
-  https.request(url, options, function(response))
+  const options = {
+    method: "POST",
+    auth: "Ahmad1:ff3cc0479c379bfdf26c08f738adb5ae-us21",
+  };
 
+  const request = https.request(url, options, function (response) {
+    response.on("data", function (data) {
+      console.log(JSON.parse(data));
+    });
+  });
+
+  request.write(jsonData)
+  request.end()
 });
+
+
 
 app.listen(4000, () => {
   console.log("server is up and running on port 4000");
 });
 
 // my API Key
-// 41b8e8396b51051582fbd6e1d0aaa0f3-us21
+// ff3cc0479c379bfdf26c08f738adb5ae-us21
 
 //audience id
 // 9f7bf0a398
