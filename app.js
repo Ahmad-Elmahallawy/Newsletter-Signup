@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const bodyParser = require("body-parser");
 const https = require("https");
@@ -6,6 +7,7 @@ const app = express();
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/signup.html");
@@ -34,30 +36,27 @@ app.post("/", (req, res) => {
 
   const options = {
     method: "POST",
-    auth: "Ahmad1:ff3cc0479c379bfdf26c08f738adb5ae-us21",
+    auth: "Ahmad1:"+process.env.API_KEY,
   };
 
   const request = https.request(url, options, function (response) {
-
-    response.statusCode === 200 ? res.sendFile(__dirname + "/success.html") : res.sendFile(__dirname + "/failure.html")
+    response.statusCode === 200
+      ? res.sendFile(__dirname + "/success.html")
+      : res.sendFile(__dirname + "/failure.html");
 
     response.on("data", function (data) {
       console.log(JSON.parse(data));
     });
   });
 
-  request.write(jsonData)
-  request.end()
+  request.write(jsonData);
+  request.end();
 });
 
-
-
+app.post("/failure", function (req, res) {
+  res.redirect("/");
+});
 app.listen(4000, () => {
   console.log("server is up and running on port 4000");
 });
 
-// my API Key
-// ff3cc0479c379bfdf26c08f738adb5ae-us21
-
-//audience id
-// 9f7bf0a398
