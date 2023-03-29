@@ -1,4 +1,4 @@
-require("dotenv").config()
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const https = require("https");
@@ -7,7 +7,6 @@ const app = express();
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/signup.html");
@@ -36,7 +35,7 @@ app.post("/", (req, res) => {
 
   const options = {
     method: "POST",
-    auth: "Ahmad1:"+process.env.API_KEY,
+    auth: "Ahmad1:" + process.env.API_KEY,
   };
 
   const request = https.request(url, options, function (response) {
@@ -59,4 +58,3 @@ app.post("/failure", function (req, res) {
 app.listen(4000, () => {
   console.log("server is up and running on port 4000");
 });
-
